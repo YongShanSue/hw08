@@ -703,3 +703,15 @@ int EVqrShifted(MAT &A,double mu,double tol,int maxiter){
 	}
 	return count;
 }
+double NEV(double x,VEC &XS,VEC &YS,int i0,int ik){
+	if (i0==ik) 
+		return YS[i0];
+	else 
+		return((x-XS[i0])*NEV(x,XS,YS,i0+1,ik)-(x-XS[ik])*NEV(x,XS,YS,i0,ik-1))/(XS[ik]-XS[i0]);
+
+}
+double Lagrange(double x,VEC &XDATA,VEC &YDATA){
+	int ik=XDATA.len()-1;
+	int i0=0;
+	return NEV( x,XDATA,YDATA,i0,ik);
+}

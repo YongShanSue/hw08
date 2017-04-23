@@ -81,3 +81,6 @@ int EVqrShifted(MAT &A,double mu,double tol,int maxiter);
 
 #endif
 
+///////HW8 function//////////////
+double NEV(double x,VEC &XS,VEC &YS,int i0,int ik);
+double Lagrange(double x,VEC &XDATA,VEC &YDATA);
