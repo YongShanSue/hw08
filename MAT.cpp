@@ -703,15 +703,19 @@ int EVqrShifted(MAT &A,double mu,double tol,int maxiter){
 	}
 	return count;
 }
-double NEV(double x,VEC &XS,VEC &YS,int i0,int ik){
-	if (i0==ik) 
-		return YS[i0];
-	else 
-		return((x-XS[i0])*NEV(x,XS,YS,i0+1,ik)-(x-XS[ik])*NEV(x,XS,YS,i0,ik-1))/(XS[ik]-XS[i0]);
-
+double NEV(double x,VEC &XS,VEC &YS,int n){			//Non-recursive Neville’s Algorithm
+	double NS[n];
+	int i,j,k;
+	for (i=0; i<n; i++) 
+		NS[i]=YS[i];
+	for (k=1; k<n; k++) {
+		for (j=0; j<n-k; j++) {
+			NS[j]=((x-XS[j])*NS[j+1]-(x-XS[k+j])*NS[j])/(XS[j+k]-XS[j]);
+		}
+	}
+	return NS[0];
 }
-double Lagrange(double x,VEC &XDATA,VEC &YDATA){
-	int ik=XDATA.len()-1;
-	int i0=0;
-	return NEV( x,XDATA,YDATA,i0,ik);
+double Lagrange(double x,VEC &XDATA,VEC &YDATA){		//Lagrange Algorithm
+	int n=XDATA.len();
+	return NEV( x,XDATA,YDATA,n);
 }
